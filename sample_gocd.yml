@@ -1,0 +1,44 @@
+pipelines:
+  sample-build:
+    group: docker-build
+    label_template: "1.x.${COUNT}"
+    locking: off
+    materials:
+      tools:
+        git: git@github.com/gocd_sample_pipeline.git
+        branch: master
+        destination: tools
+        blacklist:
+          - "**/*"
+      service:
+        git: git@github.com/gocd_sample_pipeline.git
+        branch: master
+        destination: service
+    stages:
+      - build:
+          approval: success
+          clean_workspace: true
+          jobs:
+            docker-build:
+              tasks:
+                - exec:
+                    working_directory: tools
+                    command: cleanup/docker.sh
+                - exec:
+                    working_directory: service
+                    command: ../tools/docker/docker-publish.sh
+                    arguments:
+                      - airflow-deployer
+                      - gamesys-data-omnidata-docker-build.artifactory.gamesys.co.uk
+      - promote-to-releases:
+          approval: manual
+          clean_workspace: true
+          jobs:
+            publish:
+              tasks:
+                - exec:
+                    working_directory: service
+                    command: ../tools/docker/docker-promote.sh
+                    arguments:
+                      - gamesys-data-omnidata-docker-build.artifactory.gamesys.co.uk/airflow-deployer
+                      - gamesys-data-omnidata-docker-release.artifactory.gamesys.co.uk/airflow-deployer

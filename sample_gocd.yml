@@ -5,13 +5,13 @@ pipelines:
     locking: off
     materials:
       tools:
-        git: git@github.com/gocd_sample_pipeline.git
+        git: git@github.com:manojgdhv/gocd_sample_pipeline.git
         branch: master
         destination: tools
         blacklist:
           - "**/*"
       service:
-        git: git@github.com/gocd_sample_pipeline.git
+        git: git@github.com:manojgdhv/gocd_sample_pipeline.git
         branch: master
         destination: service
     stages:

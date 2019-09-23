@@ -1,6 +1,6 @@
 format_version: 3
 environments:
-  Default:
+  common_env:
     environment_variables:
       DEPLOYMENT: testing
     pipelines:

@@ -1,44 +1,36 @@
+format_version: 3
 pipelines:
-  sample-build:
+  Test:
     group: docker-build
-    label_template: "1.x.${COUNT}"
-    locking: off
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
     materials:
-      tools:
-        git: git@github.com:manojgdhv/gocd_sample_pipeline.git
+      git_repo:
+        git: https://github.com/manojgdhv/gocd_sample_pipeline.git
+        username: manojgdhv
+        shallow_clone: false
+        auto_update: true
         branch: master
-        destination: tools
-        blacklist:
-          - "**/*"
-      service:
-        git: git@github.com:manojgdhv/gocd_sample_pipeline.git
-        branch: master
-        destination: service
+        destination: test
+        encrypted_password: AES:w0dVmizVVLeggfIjNZ93kA==:fg2sGhDq2aTQOugx6y2sMg==
+        name: git_repo
     stages:
-      - build:
-          approval: success
-          clean_workspace: true
-          jobs:
-            docker-build:
-              tasks:
-                - exec:
-                    working_directory: tools
-                    command: cleanup/docker.sh
-                - exec:
-                    working_directory: service
-                    command: ../tools/docker/docker-publish.sh
-                    arguments:
-                      - airflow-deployer
-                      - gamesys-data-omnidata-docker-build.artifactory.gamesys.co.uk
-      - promote-to-releases:
-          approval: manual
-          clean_workspace: true
-          jobs:
-            publish:
-              tasks:
-                - exec:
-                    working_directory: service
-                    command: ../tools/docker/docker-promote.sh
-                    arguments:
-                      - gamesys-data-omnidata-docker-build.artifactory.gamesys.co.uk/airflow-deployer
-                      - gamesys-data-omnidata-docker-release.artifactory.gamesys.co.uk/airflow-deployer
+    - SayHello:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          Hello:
+            timeout: 0
+            environment_variables:
+              NAME: MyName
+            tasks:
+            - exec:
+                arguments:
+                - $NAME
+                command: echo
+                run_if: passed

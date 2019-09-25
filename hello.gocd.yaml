@@ -1,6 +1,6 @@
 format_version: 3
 pipelines:
-  Test:
+  Hello:
     group: test_group
     label_template: ${COUNT}
     lock_behavior: none

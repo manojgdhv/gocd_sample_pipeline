@@ -31,6 +31,6 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - Hello
+                - Hello RGP
                 command: echo
                 run_if: passed

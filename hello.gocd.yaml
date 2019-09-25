@@ -1,0 +1,36 @@
+format_version: 3
+pipelines:
+  Test:
+    group: test_group
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git_repo:
+        git: https://github.com/manojgdhv/gocd_sample_pipeline.git
+        username: manojgdhv
+        shallow_clone: false
+        auto_update: true
+        branch: master
+        destination: test
+        encrypted_password: AES:w0dVmizVVLeggfIjNZ93kA==:fg2sGhDq2aTQOugx6y2sMg==
+        name: git_repo
+    stages:
+    - SayHello:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          Hello:
+            timeout: 0
+            environment_variables:
+              NAME: MyName
+            tasks:
+            - exec:
+                arguments:
+                - Hello
+                command: echo
+                run_if: passed

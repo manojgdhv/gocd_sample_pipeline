@@ -13,7 +13,7 @@ pipelines:
         auto_update: true
         branch: master
         destination: test
-        encrypted_password: AES:w0dVmizVVLeggfIjNZ93kA==:fg2sGhDq2aTQOugx6y2sMg==
+        encrypted_password: AES:qh0cfHNWecZsJusXQYQygA==:JjWucwuDNNjlEXs4rrEHtA==
         name: git_repo
     stages:
     - SayHello:
